@@ -1,0 +1,69 @@
+﻿@model SMIT14_T5.ViewsModels.HomecontrollerViewModel
+
+@{
+    if (Session["Flag"].ToString() != "true" && ((Session["Temp"] != null && Session["Temp"].ToString() == "True") || (Session["Hum"] != null && Session["Hum"].ToString() == "True")))
+    {
+        <div class="side-alert alert alert-warning">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <h4><strong>Warning!</strong></h4>
+            @if (Session["Temp"].ToString() == "True")
+            {
+                int i = 0;
+                string text = "";
+                <p style="color:black">溫度異常</p>
+                while (i < ViewBag.TempLength)
+                {
+                    switch (((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name)
+                    {
+                        case "wr":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name = "南屯區(站點一_惠文國小)";
+                            break;
+                        case "macpi":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name = "西  區(站點一_中教大)";
+                            break;
+                        case "djpi":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name = "西屯區(站點一_文心櫻花站)";
+                            break;
+                        case "flesh":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name = "北屯區(站點一_仁美國小)";
+                            break;
+                    }
+                    text += ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).IOT_name + "\t"
+                        + ((SMIT14_T5.Models.IOT_RawData)ViewBag.TempAlert[i]).Temperature + "°C" + "</br>";
+                    i++;
+                }
+                <b>@Html.Raw(text)</b>
+            }
+            @if (Session["Hum"].ToString() == "True")
+            {
+                int i = 0;
+                string text = "";
+                <br />
+                <p style="color:black">濕度異常</p>
+                while (i < ViewBag.HumLength)
+                {
+                    switch (((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name)
+                    {
+                        case "wr":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name = "南屯區(站點一_惠文國小)";
+                            break;
+                        case "macpi":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name = "西  區(站點一_中教大)";
+                            break;
+                        case "djpi":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name = "西屯區(站點一_文心櫻花站)";
+                            break;
+                        case "flesh":
+                            ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name = "北屯區(站點一_仁美國小)";
+                            break;
+                    }
+                    text += ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).IOT_name + "\t"
+                        + ((SMIT14_T5.Models.IOT_RawData)ViewBag.HumAlert[i]).Temperature +"%"+ "</br>";
+                    i++;
+                }
+                <b>@Html.Raw(text)</b>
+            }
+
+        </div>
+    }
+}

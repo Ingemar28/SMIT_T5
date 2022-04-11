@@ -1,0 +1,127 @@
+body{
+    text-align: center;
+    background: url("./img/henry-be-iicyiapyggi-unsplash.jpg") no-repeat;
+    background-color: #eeebea;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#logo{
+    font-size: 40px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(33, 39, 58);
+}
+#logo:hover{
+    color: rgb(212, 101, 11);
+}
+
+form{
+    display:inline-block;
+    text-align: center;
+    width: 500px;
+    height: 150px;
+    background:rgba(255, 255, 255, 0.705);
+/*    -webkit-box-shadow: 5px 5px 10px 2px rgba(0,0,0,0.83); 
+    box-shadow: 5px 5px 10px 2px rgba(0,0,0,0.83); 
+*/}
+
+
+/* form*/
+input{
+    height: 30px;
+    width: 300px;
+    font-size: 15px;
+}
+
+input:valid{
+    border: rgb(42, 83, 216) 2px solid;
+}
+input:invalid{
+    border:2px solid rgb(170, 52, 52);
+  }
+
+/* figure */
+#Name_fg{
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+#Gender_fg{
+    position: relative;
+    top: -20px;
+    margin: 0px;
+}
+#PI_fg{
+    position: relative;
+    top: -30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+    
+    
+/* gender */
+#M{
+    position: relative;
+    left: 50px;
+}
+#F{
+    position: relative;
+    left: 30px;
+}
+#third{
+    position: relative;
+    left: 10px;
+}
+#M_label{
+    font-size: 15px;
+    position: relative;
+    top: -10px;
+    left: 30px;
+    padding: 20px;
+    box-sizing:border-box;
+}
+#F_label{
+    font-size: 15px;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    padding: 20px;
+    box-sizing:border-box;
+} 
+#third_label{
+    font-size: 15px;
+    position: relative;
+    top: -10px;
+    left: -10px;
+    padding: 20px;
+    box-sizing:border-box;
+} 
+
+
+
+/* form picture */
+.img{
+    position: relative;
+    top: -2px;
+    width: 30px;
+}
+
+.img2{
+    position: relative;
+    width: 30px;
+}
+
+#icon{
+    position: relative;
+    top: 0px;
+    left: -10px;
+}
+
+#button{
+    background-color: rgba(255, 228, 196, 0);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+#signin {
+    width: 100px;
+}

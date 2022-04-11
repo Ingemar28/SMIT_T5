@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using SMIT14_T5.Models;
+
+@{
+    if (Session["Alert"] != null && Session["Alert"].ToString() == "1")
+    {
+        <script>alert("請重新輸入帳號密碼或註冊")</script>
+    }
+    else if (Session["Alert"] != null && Session["Alert"].ToString() == "2")
+    {
+        <script>alert("請先登入或註冊")</script>
+    }
+    if (Session["flag"] != null && Session["flag"].ToString() == "16")
+    {
+        <script>alert("註冊成功!")</script>
+    }
+    @*if (Session["Success"].Equals(1))
+        {
+            <script>alert("註冊成功")</script>
+        }
+        else if (Session["Success"].Equals(0))
+        {
+            <script>alert("註冊失敗，此帳號密碼已註冊過")</script>
+        }*@
+}
+
+<br><a href="/Home/Index" style="color: black; text-decoration: none;">
+    <h1 id="logo">個人微型氣象站</h1>
+</a>
+<br>
+<br>
+<h3>@Session["Test"]</h3>
+
+<link rel="stylesheet" href="~/Setting/login.css">
+<form action="/Home/Login" method="post" name="form" style="height: 330px">
+    <!-- Name -->
+    <figure id="Name_fg" style="margin-bottom:30px">
+        <label for="UserAccount1"><img src="~/Setting/img/user.png" alt="UserAccount1" id="user_img" class="img"></label>
+        <input type="text" id="UserAccount1" name="UserAccount1" required placeholder="UserAccount"><br><br>
+    </figure>
+    <!-- Password -->
+    <figure id="PI_fg">
+        <label for="UserPWD"><img src="~/Setting/img/padlock.png" alt="UserPWD" id="pwd_img" class="img"></label>
+        <input type="password" name="UserPWD" id="UserPWD" placeholder="Password" @*pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"*@ title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 or more characters" required><br>
+    </figure>
+    <br />
+
+    @*<span id="icon">Sign in with</span>
+        <a href="https://zh-tw.facebook.com/">
+            <img src="~/Setting/img/facebook.png" alt="facebook" class="img2" style="left:0px;">
+        </a>
+        <a href="http://google.com">
+            <img src="~/Setting/img/search.png" alt="google" class="img2" style="left:10px;">
+        </a>
+        <a href="https://www.icloud.com/">
+            <img src="~/Setting/img/apple.png" alt="appl" class="img2" style="left:20px;">
+        </a><br><br>*@
+
+    <!--register-->
+    <a href="/Home/Register" style="color:black">創建帳號</a><br /><br />
+
+    <input type="submit" id="signin" value="Sign In" onclick="return pwdcheck();">
+    <!-- <input type="button" id="button" value="button" onclick="pwdcheck();"> -->
+
+
+</form>
+
+@*<div>
+        <input type="button" id="button" value="Contact us" onclick="contact();">
+        <p id="contact"></p>
+    </div>*@
+
+<script>
+    function pwdcheck() {
+        // let pwd=document.getElementById("pwd").value;
+        // let pwd2=document.getElementById("pwd2").value;
+        // let user=document.getElementById("user").value;
+        // let email=document.getElementById("email").value;
+
+        let pwd = document.forms["form"]["pwd"].value;
+        let pwd2 = document.forms["form"]["pwd2"].value;
+        let user = document.forms["form"]["user"].value;
+        let email = document.forms["form"]["email"].value;
+        // if(user == 0 || email ==0 || pwd == 0 || pwd2 == 0){
+        //     alert('Please filled all questions!');
+        //     return false;
+        // }
+        //  else if (pwd === pwd2 && user != 0 && email !=0 && pwd != 0 && pwd2 != 0){
+        //     alert('Hello '+user);
+        //     return true;
+        //  }
+        //     else{
+        //         alert('Password check must equal to Password');
+        //         return false;
+        //     }
+
+        if (user == 0 || pwd == 0) {
+            alert('Please fill in user information!');
+            return false;
+        }
+        //if (pwd !== pwd2) {
+        //    alert('Password check must equal to Password');
+        //    return false;
+        //}
+        //if (!email.match(/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/)) {
+        //    alert('Email is invalid. Please try again.');
+        //    return true;
+        //}
+        alert(`Hello ${user}`);
+        return true;
+    }
+
+        //function contact() {
+        //    document.getElementById("contact").innerHTML = "Cook@gmail.com";
+        //}
+
+</script>
+

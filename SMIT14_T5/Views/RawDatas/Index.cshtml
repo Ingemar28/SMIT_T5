@@ -1,0 +1,76 @@
+﻿@model IEnumerable<SMIT14_T5.Models.RawData>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DataTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Humidity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pressure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.H24R)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTempHigh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTempLow)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StationID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Temperature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Humidity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pressure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.H24R)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTempHigh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTempLow)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StationID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Data_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Data_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Data_ID })
+        </td>
+    </tr>
+}
+
+</table>

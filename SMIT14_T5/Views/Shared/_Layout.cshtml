@@ -1,0 +1,232 @@
+﻿@using SMIT14_T5.Models;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title- IOT微型氣象站</title>
+    <!--css========-->
+    @*<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />*@
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/Scripts/animate/animate.css" rel="stylesheet" />
+    <link href="~/Scripts/slick/slick.css" rel="stylesheet" />
+    <link href="~/Scripts/themefisher-font/style.css" rel="stylesheet" />
+    <link href="~/Scripts/css/style.css" rel="stylesheet" />
+    <link href="~/Scripts/css/bootstrap.min.css" rel="stylesheet" />
+    @*<script src="~/Scripts/modernizr-2.8.3.js"></script>*@
+
+    <!--include jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+        #footer {
+            background-color: #E0E0E0;
+            font-size: larger;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .toTop-arrow {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            border-radius: 33%;
+            opacity: 0.6;
+            background: #000;
+            cursor: pointer;
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            display: none;
+        }
+
+            .toTop-arrow::before, .toTop-arrow::after {
+                width: 18px;
+                height: 5px;
+                border-radius: 3px;
+                background: #FCFCFC;
+                position: absolute;
+                content: "";
+            }
+
+            .toTop-arrow::before {
+                transform: rotate(-45deg) translate(0, -50%);
+                left: 0.5rem;
+            }
+
+            .toTop-arrow::after {
+                transform: rotate(45deg) translate(0, -50%);
+                right: 0.5rem;
+            }
+
+            .toTop-arrow:focus {
+                outline: none;
+            }
+
+        .side-alert {
+            position: fixed;
+            left: 0%;
+            top: 50%;
+            z-index: 100;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .closebtn:hover {
+                color: black;
+            }
+    </style>
+</head>
+<body>
+    <!--Fixed Navigation ==================================== -->
+
+    <header class="navigation">
+        <div class="container">
+            <!-- main nav -->
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <!-- logo -->
+                <a class="navbar-brand logo" href="/Home/Index">
+                    <img class="logo-default" src="~/images/logo.jpg" style="height:40px; width:40px" alt="logo" />
+                    <img class="logo-white" src="~/images/logo.jpg" style="height:40px; width:40px" alt="logo" />
+                </a>
+                <!-- /logo -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navigation">
+                    <ul class="navbar-nav ml-auto text-center">
+                        <li class="nav-item dropdown active ">
+                            <a class="nav-link" href="/Home/Index" style="font-weight: bold; font-size: larger; color:black; cursor:pointer; ">首頁</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/Home/Data" style="font-weight: bold; font-size: larger; color: black">資料顯示</a>
+                        </li>
+                        <li class="nav-item ">
+                            @if (Session["DataID"] == null)
+                            {
+                                <!-- <a class="nav-link" href="/Home/Member" style="font-weight:bold; font-size:larger;">會員</a> -->
+                                <a hidden="hidden" class="nav-link" href="/Home/Member2" style="font-weight: bold; font-size: larger; color: black">會員</a>
+                            }
+                            else
+                            {
+                                <!-- <a class="nav-link" href="/Home/Member" style="font-weight:bold; font-size:larger;">會員</a> -->
+                                <a class="nav-link" href="/Home/Member2" style="font-weight: bold; font-size: larger; color: black">會員</a>
+                            }
+                        </li>
+                        <li class="nav-item ">
+                            @if (Session["DataID"] == null)
+                            {
+                                <a class="nav-link" href="/Home/login" style="font-weight: bold; font-size: larger; color: black">登入</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" href="#" style="font-weight: bold; font-size: larger; color: black" onclick="Logout()">登出</a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+            <!-- /main nav -->
+        </div>
+
+        <script>
+            setInterval("$('#partialDiv2').load('@Url.Action("AlertCheck", "Home")')", 600000);
+
+        </script>
+
+        <div id="partialDiv2">
+            @{
+                if (Session["Temp"] != null && Session["Temp"].ToString() == "true")
+                {
+                    <div class="side-alert alert alert-warning">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <h4><strong>Danger!</strong></h4>
+                        <p>Architect & Engineer</p>
+                        <b>溫度高於~~~</b>
+                    </div>
+                }
+            }
+        </div>
+
+
+    </header>
+    <!--top button-->
+    <button type="button" id="BackTop" class="toTop-arrow"></button>
+    <script>
+        $(function () {
+            $('#BackTop').click(function () {
+                $('html,body').animate({ scrollTop: 0 }, 333);
+            });
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('#BackTop').fadeIn(222);
+                } else {
+                    $('#BackTop').stop().fadeOut(222);
+                }
+            }).scroll();
+        });
+    </script>
+
+    <script>
+        function Logout() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Logout", "Home")',
+                data: { Logout: 0 },
+                success: function () {
+                    window.location.href = '@Url.Action("Index","Home")';
+                }
+
+            });
+
+        }
+    </script>
+
+
+    <div class="body-content">
+        @RenderBody()
+    </div>
+    <br />
+    <div id="footer">
+        <footer style="text-align:center">
+            <div class="container">
+                @*<div class="row justify-content-center align-items-center">*@
+                <span>地址:台中市南屯區公益路900號</span><br />
+                <span>連絡電話:04-12345678 ( 週一 ~ 週五 07:00~18:00 )</span><br />
+                <span>&copy; @DateTime.Now</span><br />
+                <span>訂閱我</span><br />
+                <a href="https://www.facebook.com/">
+                    <img src="~/images/facebook.png" width="30" alt="">
+                </a>
+                <a href="https://www.instagram.com/">
+                    <img src="~/images/instagram.png" width="30" alt="">
+                </a>
+                <a href="https://line.me/zh-hant/">
+                    <img src="~/images/line.png" width="30" alt="">
+                </a>
+            </div>
+            @*</div>*@
+        </footer>
+    </div>
+
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SMIT14_T5.Models.Register
+
+@{
+    if (Session["flag"] != null && Session["flag"].ToString() == "0")
+    {
+        <script>alert("此帳號密碼已被註冊，請重新註冊")</script>
+    }
+}
+
+<br><a href="/Home/Index" style="color: black; text-decoration: none;">
+    <h1 id="logo">個人微型氣象站</h1>
+</a>
+<br>
+<br>
+
+<link rel="stylesheet" href="~/Setting/register.css">
+
+<form action="/Home/Register" method="post" name="UserData">
+    <!--Account-->
+    <figure id="Account_fg">
+        <label for="user"><img src="~/Setting/img/user.png" alt="user" id="user_img" class="img"></label>
+        <input type="text" id="UserAccount1" name="UserAccount1" required placeholder="UserAccount" maxlength="20">
+        <br>
+        <label for="UserPWD"><img src="~/Setting/img/padlock.png" alt="UserPWD" id="pwd_img" class="img"></label>
+        <input type="password" name="UserPWD" id="UserPWD" maxlength="20" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8-20 characters" required>
+        <br>
+        <label for="UserPWD2"><img src="~/Setting/img/padlock.png" alt="UserPWD2" id="pwd2_img" class="img"></label>
+        <input type="password" name="UserPWD2" id="UserPWD2" maxlength="20" placeholder="Password Check" required>
+    </figure>
+
+    <!--Name-->
+    <figure id="Name_fg">
+        <label for="user"><img src="~/Setting/img/pencil.png" alt="user" id="user_img" class="img"></label>
+        <input type="text" id="UserLastName" name="UserLastName" required placeholder="UserLastName" maxlength="20"><br />
+        <label for="user"><img src="~/Setting/img/pencil.png" alt="user" id="user_img" class="img"></label>
+        <input type="text" id="UserFirstName" name="UserFirstName" required placeholder="UserFirstName" maxlength="20"><br><br>
+    </figure>
+
+    <!--Personal Information-->
+    <figure id="PI_fg">
+        <label for="email"><img src="~/Setting/img/email.png" alt="email" id="email_img" class="img" maxlength="50"></label>
+        <input type="email" id="email" name="EmailAddress" placeholder="Email" required><br>
+        <label for="birthdate"><img src="~/Setting/img/birthday.png" alt="birthdate" id="birth_img" class="img"></label>
+        <input type="date" id="birthdate" name="BirthDate" placeholder="BirthDate" value="1997-01-01" required><br>
+        <label for="address1"><img src="~/Setting/img/home.png" alt="address1" id="address_img" class="img" maxlength="120"></label>
+        <input type="text" id="address1" name="AddressLine1" placeholder="Address1" value=""><br>
+        <label for="address2"><img src="~/Setting/img/home.png" alt="address2" id="address_img" class="img" maxlength="120"></label>
+        <input type="text" id="address2" name="AddressLine2" placeholder="Address2" value=""><br>
+    </figure>
+    <input type="submit" id="submit" value="submit" onclick="return pwdcheck();">
+</form>
+
+<script>
+    function pwdcheck() {
+        let pwd = document.forms["form"]["pwd"].value;
+        let pwd2 = document.forms["form"]["pwd2"].value;
+        let user = document.forms["form"]["user"].value;
+        let email = document.forms["form"]["email"].value;
+        
+        if (user == 0 || email == 0 || pwd == 0 || pwd2 == 0) {
+            alert('Please fill in user information!');
+            return false;
+        }
+        if (pwd !== pwd2) {
+            alert('Password check must equal to Password');
+            return false;
+        }
+        if (!email.match(/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/)) {
+            alert('Email is invalid. Please try again.');
+            return true;
+        }
+        alert(`Hello ${user}`);
+        return true;
+    }
+</script>
+

@@ -1,0 +1,83 @@
+﻿@model SMIT14_T5.Models.RawData
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RawData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DataTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Temperature)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Temperature)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Humidity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Humidity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pressure)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pressure)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.H24R)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.H24R)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTempHigh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTempHigh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTempLow)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTempLow)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StationID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StationID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Data_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

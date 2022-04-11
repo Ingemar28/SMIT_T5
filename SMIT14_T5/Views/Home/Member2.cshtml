@@ -1,0 +1,554 @@
+﻿@{
+    ViewBag.Title = "UserSetting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@model SMIT14_T5.Models.UserData*@
+@*@using SMIT14_T5.Models*@
+
+@model SMIT14_T5.ViewsModels.MembersViewModel
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="~/Setting/UserSetting.css">
+    <style>
+        .IOT-Checkbox {
+            display: inline-block;
+            position: relative;
+            left: 50px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/Home/Member2" method="post" name="Member2">
+        @if (Session["PWDhint"] != null && Session["PWDhint"].ToString() != "0")
+        {
+            <script>alert("密碼更新成功!")</script>
+        }
+
+        <input type="hidden" name="DataID" value="@Session["DataID"]" />
+
+        <div class="container light-style flex-grow-1 container-p-y">
+            <h4 class="font-weight-bold py-3 mb-4" style="padding-top:100px">
+                Account settings
+            </h4>
+            <div class="card overflow-hidden">
+                <div class="row no-gutters row-bordered row-border-light">
+                    <div class="col-md-3 pt-0">
+                        <div class="list-group list-group-flush account-settings-links">
+                            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">個人資訊</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">更換密碼</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications">預警設定</a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="account-general">
+
+                                <div class="editor-label">
+                                </div>
+
+                                @foreach (var item in Model.userDatas)
+                                {
+                                    if (Session["DataID"].ToString() == item.DataID.ToString())
+                                    {
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label class="form-label">姓</label>
+                                                <input type="text" name="UserLastName" class="form-control mb-1" value="@Html.DisplayFor(Model => item.UserLastName)" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">名</label>
+                                                <input type="text" name="UserFirstName" class="form-control" value="@Html.DisplayFor(Model => item.UserFirstName)" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">生日</label>
+                                                @Html.TextBoxFor(m => item.BirthDate, "{0:yyyy-MM-dd}", new { Name = "BirthDate", @class = "form-control", type = "date"})
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">E-mail</label>
+                                                <input type="text" name="EmailAddress" class="form-control mb-1" value="@Html.DisplayFor(Model => item.EmailAddress)" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">地址</label>
+                                                <input type="text" name="AddressLine1" class="form-control" value="@Html.DisplayFor(Model => item.AddressLine1) "> @*帶入地址格式*@
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">地址</label>
+                                                <input type="text" name="AddressLine2" class="form-control" value=" @Html.DisplayFor(Model => item.AddressLine2)"> @*帶入地址格式*@
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="tab-pane fade" id="account-change-password">
+                                <div class="card-body pb-2">
+
+                                    <div class="form-group">
+                                        <label class="form-label">請輸入舊密碼</label>
+                                        <input type="password" id="OldPWD" name="OldPWD" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">請輸入新密碼</label>
+                                        <input type="password" name="NewPWD" id=" NewPWD1" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">請在輸入一次新密碼</label>
+                                        <input type="password" id=" NewPWD2" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="account-notifications">
+                                @foreach (var item in Model.userSettings)
+                                {
+                                    if (Session["DataID"].ToString() == item.DataID.ToString())
+                                    {
+                                        if (item.AlarmTypeID == 1)
+                                        {
+                                            <div class="card-body pb-2">
+                                                <h4 class="mb-4">溫度</h4>
+                                                <div class="form-group">
+                                                    <label class="switcher">
+                                                        <input id="checkbox1" type="checkbox" class="switcher-input" value="true" name="AlarmEnable1" />
+                                                        <input type="hidden" value="false" name="AlarmEnable1" />
+                                                        @if (item.AlarmEnable == true)
+                                                        {
+                                                            <script>document.getElementById("checkbox1").checked = true;</script>
+                                                        }
+                                                        else
+                                                        {
+                                                            <script>document.getElementById("checkbox1").checked = false;</script>
+                                                        }
+                                                        <span class="switcher-indicator">
+                                                            <span class="switcher-yes"></span>
+                                                            <span class="switcher-no"></span>
+                                                        </span>
+                                                        <span class="switcher-label">溫度高於</span>
+                                                        <input type="number" name="AlarmCondition1" value="@Html.DisplayFor(Model => item.AlarmCondition)" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            foreach (var set in Model.iot_Settings)
+                                            {
+                                                if (Session["DataID"].ToString() == set.DataID.ToString() && set.AlarmTypeID == 1)
+                                                {
+                                                    if (set.IotName == "wr")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_1_1" id="Iot_1_1" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_1_1" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_1_1").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_1_1").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    else if (set.IotName == "macpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_1_2" id="Iot_1_2" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_1_2" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_1_2").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_1_2").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                        <br />
+                                                    }
+                                                    else if (set.IotName == "djpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_1_3" id="Iot_1_3" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_1_3" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_1_3").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_1_3").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    else if (set.IotName == "flesh")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_1_4" id="Iot_1_4" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_1_4" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_1_4").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_1_4").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (item.AlarmTypeID == 2)
+                                        {
+                                            <div class="card-body pb-2">
+                                                <div class="form-group">
+                                                    <label class="switcher">
+                                                        <input id="checkbox2" type="checkbox" class="switcher-input" value="true" name="AlarmEnable2" />
+                                                        <input type="hidden" value="false" name="AlarmEnable2" />
+                                                        @if (item.AlarmEnable == true)
+                                                        {
+                                                            <script>document.getElementById("checkbox2").checked = true;</script>
+                                                        }
+                                                        else
+                                                        {
+                                                            <script>document.getElementById("checkbox2").checked = false;</script>
+                                                        }
+                                                        <span class="switcher-indicator">
+                                                            <span class="switcher-yes"></span>
+                                                            <span class="switcher-no"></span>
+                                                        </span>
+                                                        <span class="switcher-label">溫度低於 </span>
+                                                        <input type="number" name="AlarmCondition2" value="@Html.DisplayFor(Model => item.AlarmCondition)" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            foreach (var set in Model.iot_Settings)
+                                            {
+                                                if (Session["DataID"].ToString() == set.DataID.ToString() && set.AlarmTypeID == 2)
+                                                {
+                                                    if (set.IotName == "wr")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_2_1" id="Iot_2_1" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_2_1" />
+
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_2_1").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_2_1").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    if (set.IotName == "macpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_2_2" id="Iot_2_2" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_2_2" />
+
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_2_2").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_2_2").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                        <br />
+                                                    }
+                                                    else if (set.IotName == "djpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_2_3" id="Iot_2_3" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_2_3" />
+
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_2_3").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_2_3").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    else if (set.IotName == "flesh")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_2_4" id="Iot_2_4" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_2_4" />
+
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_2_4").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_2_4").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (item.AlarmTypeID == 3)
+                                        {
+                                            <br />
+                                            <hr class="border-light m-0">
+                                            <div class="card-body pb-2">
+                                                <h4 class="mb-4">濕度</h4>
+                                                <div class="form-group">
+                                                    <label class="switcher">
+                                                        <input id="checkbox3" type="checkbox" class="switcher-input" value="true" name="AlarmEnable3" />
+                                                        <input type="hidden" value="false" name="AlarmEnable3" />
+
+                                                        @if (item.AlarmEnable == true)
+                                                        {
+                                                            <script>document.getElementById("checkbox3").checked = true;</script>
+                                                        }
+                                                        else
+                                                        {
+                                                            <script>document.getElementById("checkbox3").checked = false;</script>
+                                                        }
+                                                        <span class="switcher-indicator">
+                                                            <span class="switcher-yes"></span>
+                                                            <span class="switcher-no"></span>
+                                                        </span>
+                                                        <span class="switcher-label">濕度高於</span>
+                                                        <input type="number" name="AlarmCondition3" value="@Html.DisplayFor(Model => item.AlarmCondition)" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            foreach (var set in Model.iot_Settings)
+                                            {
+                                                if (Session["DataID"].ToString() == set.DataID.ToString() && set.AlarmTypeID == 3)
+                                                {
+                                                    if (set.IotName == "wr")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_3_1" id="Iot_3_1" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_3_1" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_3_1").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_3_1").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    if (set.IotName == "macpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_3_2" id="Iot_3_2" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_3_2" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_3_2").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_3_2").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                        <br />
+
+                                                    }
+                                                    else if (set.IotName == "djpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_3_3" id="Iot_3_3" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_3_3" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_3_3").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_3_3").checked = false;</script>
+                                                            }
+
+                                                        </span>
+                                                    }
+                                                    else if (set.IotName == "flesh")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_3_4" id="Iot_3_4" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_3_4" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_3_4").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_3_4").checked = false;</script>
+                                                            }
+
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (item.AlarmTypeID == 4)
+                                        {
+                                            <div class="card-body pb-2">
+                                                <div class="form-group">
+                                                    <label class="switcher">
+                                                        <input id="checkbox4" class="switcher-input" type="checkbox" value="true" name="AlarmEnable4" />
+                                                        <input type="hidden" value="false" name="AlarmEnable4" />
+
+                                                        @if (item.AlarmEnable == true)
+                                                        {
+                                                            <script>document.getElementById("checkbox4").checked = true;</script>
+                                                        }
+                                                        else
+                                                        {
+                                                            <script>document.getElementById("checkbox4").checked = false;</script>
+                                                        }
+                                                        <span class="switcher-indicator">
+                                                            <span class="switcher-yes"></span>
+                                                            <span class="switcher-no"></span>
+                                                        </span>
+                                                        <span class="switcher-label">濕度低於</span>
+                                                        <input type="number" name="AlarmCondition4" value="@Html.DisplayFor(Model => item.AlarmCondition)" />
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            foreach (var set in Model.iot_Settings)
+                                            {
+                                                if (Session["DataID"].ToString() == set.DataID.ToString() && set.AlarmTypeID == 4)
+                                                {
+                                                    if (set.IotName == "wr")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_4_1" id="Iot_4_1" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_4_1" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_4_1").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_4_1").checked = false;</script>
+                                                            }
+
+                                                        </span>
+                                                    }
+                                                    if (set.IotName == "macpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_4_2" id="Iot_4_2" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_4_2" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_4_2").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_4_2").checked = false;</script>
+                                                            }
+                                                        </span>
+                                                        <br />
+                                                    }
+                                                    else if (set.IotName == "djpi")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_4_3" id="Iot_4_3" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_4_3" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_4_3").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_4_3").checked = false;</script>
+                                                            }
+
+                                                        </span>
+                                                    }
+                                                    else if (set.IotName == "flesh")
+                                                    {
+                                                        <span class="IOT-Checkbox">
+                                                            <input type="checkbox" name="IotEnable_4_4" id="Iot_4_4" class="switcher-input">
+                                                            <input type="hidden" value="false" name="IotEnable_4_4" />
+                                                            <label>@Html.DisplayFor(Model => set.Town)</label>
+                                                            @if (set.IotEnable == true)
+                                                            {
+                                                                <script>document.getElementById("Iot_4_4").checked = true;</script>
+                                                            }
+                                                            else
+                                                            {
+                                                                <script>document.getElementById("Iot_4_4").checked = false;</script>
+                                                            }
+
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right mt-3">
+                    <input type="submit" class="btn btn-primary" value="Save changes" />
+                    @*<input type="submit" id="submit" value="submit" onclick="return pwdcheck();">*@
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+
+        window.onload = AlertCheck();
+    function AlertCheck() {
+            $.ajax({
+            type: "POST",
+                url: '@Url.Action("AlertCheck", "Home")',
+            success: function () {
+                $('#partialDiv2').load('@Url.Action("AlertCheck", "Home")')
+                }
+            });
+
+            }
+
+    </script>
+
+
+</body>
+</html>
+
+

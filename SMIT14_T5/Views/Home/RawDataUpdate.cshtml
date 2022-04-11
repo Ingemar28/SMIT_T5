@@ -1,0 +1,178 @@
+﻿@model SMIT14_T5.ViewsModels.HomecontrollerViewModel
+
+@{
+    ViewBag.Title = "TeseFunc";
+
+}
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>*@
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <table class="table">
+                <tr>
+                    <td>
+                        時間
+                    </td>
+                    <td>
+                        溫度
+                    </td>
+                    <td>
+                        濕度
+                    </td>
+                    <td>
+                        stationName
+                    </td>
+                </tr>
+                @{
+                    int j = 0;                   
+                    for (int i = Model.IOT_RawData.ToList().Count; i > 0; i--)
+                    {
+                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == ViewBag.iotstation)
+                        {
+                            if (j == ViewBag.countfix) { break; }
+                            else
+                            {
+                                for (; j < ViewBag.complementcountIOT; j++)
+                                {
+                                    <tr><td COLSPAN=5><center>尚未更新</center></td></tr>
+                                    if (j == ViewBag.countfix) { break; }
+                                }
+                                if (j == ViewBag.countfix) { break; }
+                                j++;
+                                <tr>
+                                    <td>
+                                        @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                    </td>
+                                    <td>
+                                        @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                    </td>
+                                    <td>
+                                        @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                    </td>
+                                    @*<td>
+                                            @Model.IOT_RawData.ElementAt(i - 1).IOT_name
+                                        </td>*@
+                                    @foreach (var item in Model.IOTStation)
+                                    {
+                                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                        {
+                                            <td>
+                                                @item.Town
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                    }
+                }
+            </table>
+        </div>
+        <div class="col">
+            <table class="table">
+                <tr>
+                    <td>
+                        時間
+                    </td>
+                    <td>
+                        溫度
+                    </td>
+                    <td>
+                        濕度
+                    </td>
+                    <td>
+                        stationName
+                    </td>
+                    <td>
+                        鄉鎮區
+                    </td>
+                </tr>
+                @{
+                    j = 0;
+                    for (int i = Model.RawData.ToList().Count; i > 0; i--)
+                    {
+                        if (Model.RawData.ElementAt(i - 1).StationID == ViewBag.rawstation)
+                        {
+                            foreach (var item in Model.Station)
+                            {
+
+                                if (Model.RawData.ElementAt(i - 1).StationID == item.StationID && item.St_ID < 29)
+                                {
+                                    var check = ViewBag.complementcount % 6;
+                                    var checkcount = ViewBag.complementcount / 6;
+                                    for (int l = 0; l < checkcount; l++)
+                                    {
+                                        for (int k = 0; k < check; k++)
+                                        {
+                                            <tr><td COLSPAN=5><center>此站別氣象局僅提供整點數據</center></td></tr>
+                                        }
+                                        <tr><td COLSPAN=5><center>氣象局資料尚未更新</center></td></tr>
+                                    }
+                                    ViewBag.complementcount = 0;
+
+                                }
+
+                            }
+                            if (j == ViewBag.count) { break; }
+                            else
+                            {
+                                for (; j < ViewBag.complementcount; j++)
+                                {
+                                    <tr><td COLSPAN=5><center>氣象局資料尚未更新</center></td></tr>
+                                    if (j == ViewBag.count) { break; }
+                                }
+                                if (j == ViewBag.count) { break; }
+
+                                foreach (var item in Model.Station)
+                                {
+                                    if (Model.RawData.ElementAt(i - 1).StationID == item.StationID && item.St_ID < 29)
+                                    {
+
+                                        for (int k = 0; k < 5; k++)
+                                        {
+                                            <tr><td COLSPAN=5><center>此站別氣象局僅提供整點數據</center></td></tr>
+                                        }
+
+                                    }
+                                }
+
+                                j++;
+                                <tr>
+                                    <td>
+                                        @Model.RawData.ElementAt(i - 1).DataTime
+                                    </td>
+                                    <td>
+                                        @Model.RawData.ElementAt(i - 1).Temperature
+                                    </td>
+                                    <td>
+                                        @(float.Parse(Model.RawData.ElementAt(i - 1).Humidity) * 100)
+                                    </td>
+
+                                    @foreach (var item in Model.Station)
+                                    {
+                                        if (Model.RawData.ElementAt(i - 1).StationID == item.StationID)
+                                        {
+                                            <td>
+                                                @item.LocationName
+                                            </td>
+                                            <td>
+                                                @item.Town
+                                            </td>
+                                        }
+                                    }
+
+                                </tr>
+                            }
+                        }
+                    }
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

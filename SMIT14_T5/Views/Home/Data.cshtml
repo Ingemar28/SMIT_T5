@@ -1,0 +1,459 @@
+﻿@model SMIT14_T5.ViewsModels.HomecontrollerViewModel
+
+@{
+    ViewBag.Title = "Data";
+
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="~/Setting/UserSetting.css">
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 15px;
+            padding-left: 15px;
+            width: 100%;
+            max-width: 1400px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <div style="background-image: url(../../images/3.jpg); background-repeat: repeat">
+        <div class="container">
+            <div style="background-color:wheat" ;>
+                <div class="mx-5">
+                    <span>請點選下拉選單選取資料條件</span>
+                    <br />
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="datatype">資料類別</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="addData(this.text)">氣溫</a>
+                            <a class="dropdown-item" href="#" onclick="addData(this.text)">濕度</a>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="number_count">筆數</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="addData1(this.text)">10筆</a>
+                            <a class="dropdown-item" href="#" onclick="addData1(this.text)">20筆</a>
+                            <a class="dropdown-item" href="#" onclick="addData1(this.text)">50筆</a>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="iotstationid">Iot站台</button>
+                        <div class="dropdown-menu">
+                            @foreach (var item in Model.IOTStation)
+                            {
+                                <a class="dropdown-item" href="#" onclick="addData3(this.id, this.text)" id="@Html.Raw(item.IOT_name)">@Html.DisplayFor(modelItem => item.Town)</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="stationid">氣象站台</button>
+                        <div class="dropdown-menu  pre-scrollable">
+                            @foreach (var item in Model.Station)
+                            {
+                                <a class="dropdown-item" href="#" onclick="addData2(this.id, this.text)" id="@Html.Raw(item.StationID)">@Html.DisplayFor(modelItem => item.Town) (@Html.DisplayFor(modelItem => item.LocationName))</a>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="btn-group mx-4">
+                        <button type="button" class="btn btn-danger" onclick="update()">更新</button>
+                    </div>
+                    <div class="btn-group" id="alertdiv">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div style="background-color:wheat;">
+                <div class="container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            @*<canvas id="lineChart1"></canvas>*@
+
+
+
+
+            <script>
+            $('.dropdown-toggle').dropdown();
+            var time = @Html.Raw(ViewBag.time);
+            var temperature = @Html.Raw(ViewBag.temperature);
+            var humidity = @Html.Raw(ViewBag.humidity);
+            var temperatureiot = @Html.Raw(ViewBag.temperatureiot);
+            var humidityiot = @Html.Raw(ViewBag.humidityiot);
+
+
+            //const labels = ['January', 'February', 'March', 'April', 'May', 'June',];
+
+
+            var ctx = document.getElementById("lineChart");
+            var ctx1 = document.getElementById("lineChart1");
+            //[0, 10, 5, 2, 20, 30, 45]
+            //var data1 =
+            var chart = new Chart(ctx, {
+                type: "line",
+                data:
+                {
+                    labels: time,
+                    datasets:
+                        [
+                            {
+                                label: "氣溫20筆",
+                                data: temperature,
+                                fill: false,
+                                backgroundcolor: 'rgba(255,165,0,0.3)',
+                                borderColor: 'rgb(255,165,0)',
+                                pointStyle: "circle",
+                                pointBackgroundColor: 'rgb(0,255,0)',
+                                pointRadius: 5,
+                                pointHoverRadius: 10
+                            },
+                            {
+                                label: "IOT氣溫20筆",
+                                data: temperatureiot,
+                                fill: false,
+                                backgroundcolor: 'rgba(255,165,0,0.3)',
+                                borderColor: 'rgb(0,0,0)',
+                                pointStyle: "circle",
+                                pointBackgroundColor: 'rgb(0,255,0)',
+                                pointRadius: 5,
+                                pointHoverRadius: 10
+                            },
+
+                        ]
+
+                },
+                Option:
+                {
+                    responsive: true,
+                    title:
+                    {
+                        display: true,
+                        frontSize: 26,
+                        text: '小型氣象站'
+                    },
+
+
+                }
+            });
+
+
+
+            </script>
+            <script>
+
+            var count;
+            var time;
+            var temperature;
+            var humidity;
+            var timeiot;
+            var temperatureiot;
+            var humidityiot;
+            var rawstation;
+            var iotstation;
+
+
+
+            //botton datatype refresh to display
+            function addData(test1) {
+
+                var upForms1 = document.getElementById('datatype');
+
+                upForms1.innerHTML = test1;
+
+            }
+            //botton number_count refresh to display
+            function addData1(test2) {
+
+                var upForms2 = document.getElementById('number_count');
+
+                upForms2.innerHTML = test2;
+                switch (test2) {
+                    case "10筆":
+                        count = 10;
+                        break;
+                    case "20筆":
+                        count = 20;
+                        break;
+                    case "50筆":
+                        count = 50;
+                        break;
+                    default:
+                        break;
+                }
+            }
+                function addData2(value,test3) {
+
+                var upForms3 = document.getElementById('stationid');
+
+                upForms3.innerHTML = test3;
+                rawstation = value;
+
+
+            }
+            function addData3(value,text) {
+
+                var upForms4 = document.getElementById('iotstationid');
+
+                upForms4.innerHTML = text;
+                iotstation = value;
+            }
+
+                    @*@{
+
+                        int test = 50;
+
+                        time = "[";
+                        for (int i = Model.RawData.ToList().Count - test; i < Model.RawData.ToList().Count; i++)
+                        {
+                            time += "'" + Model.RawData.ToList()[i].DataTime.ToString() + "',";
+                        }
+
+                        ViewBag.time2 = time + "]";
+
+                        temperature = "[";
+                        for (int i = Model.RawData.ToList().Count - test; i < Model.RawData.ToList().Count; i++)
+                        {
+                            temperature += "'" + Model.RawData.ToList()[i].Temperature.ToString() + "',";
+                        }
+                        ViewBag.temperature2 = temperature + "]";
+
+                        temperatureiot = "[";
+                        for (int i = Model.IOT_RawData.ToList().Count - test; i < Model.IOT_RawData.ToList().Count; i++)
+                        {
+                            temperatureiot += "'" + Model.IOT_RawData.ToList()[i].Temperature.ToString() + "',";
+                        }
+                        ViewBag.temperatureiot2 = temperatureiot + "]";
+
+                        humidity = "[";
+                        for (int i = Model.RawData.ToList().Count - test; i < Model.RawData.ToList().Count; i++)
+                        {
+                            humidity += "'" + (float.Parse(Model.RawData.ToList()[i].Humidity) * 100).ToString() + "',";
+                        }
+                        ViewBag.humidity2 = humidity + "]";
+
+                        humidityiot = "[";
+                        for (int i = Model.IOT_RawData.ToList().Count - test; i < Model.IOT_RawData.ToList().Count; i++)
+                        {
+                            humidityiot += "'" + Model.IOT_RawData.ToList()[i].Humidity.ToString() + "',";
+                        }
+                        ViewBag.humidityiot2 = humidityiot + "]";
+                     }*@
+
+
+
+            //data send to chart
+
+            function update() {
+                var upForms1 = document.getElementById('datatype');
+                var upForms2 = document.getElementById('number_count');
+                var upForms3 = document.getElementById('stationid');
+                var upForms4 = document.getElementById('iotstationid');
+                var print = document.getElementById('alertdiv');
+                if (upForms1.innerHTML == "資料類別" | upForms2.innerHTML == "筆數" | upForms3.innerHTML == "氣象站台" | upForms4.innerHTML == "Iot站台")
+                {
+                    print.innerHTML = '<font color="red">'+"有資料格尚未選擇!!"+'</font>';
+                    return;
+                }
+                print.innerHTML = "";
+                //clear old chart
+                chart.data.labels.pop();
+                chart.data.datasets.forEach((dataset) => {dataset.data.pop();});
+                chart.update();
+
+                $('#partialDiv').load('@Url.Action("RawDataUpdate", "Home")', { count: count, rawstation: rawstation, iotstation: iotstation});
+                //$(document).ajaxError(function (event, jqxhr, settings) {
+                //    //your code here
+                //})
+                @*var jsonData = $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SortData", "Home")',  //
+                    data: { count: count },
+                    dataType: 'json',
+                    cache: false, async: false,
+                    success: function (data) {
+                        for (var sensorRecord in results) {
+                            alert(sensorRecord);
+                        }
+                    },
+                    error: function (data) {
+                        alert("失敗");
+                    }
+
+                });*@
+
+                var jsonData = $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SortData", "Home")',
+                    data: { count: count, rawstation: rawstation, iotstation: iotstation },
+                    dataType: 'json',
+                    cache: false, async: false,
+                }).done(function (results) {
+                    //alert(results);
+                    time=results.time;
+                    var rrr = JSON.parse(results);
+                    //rrr.forEach(function (obj) { time = obj.time; })
+                    //debugger;
+                    //alert(rrr.time);
+                    //alert(typeof (rrr.time));
+                    time = rrr.time.split(",");
+                    temperature = rrr.temperature.split(",");
+                    humidity = rrr.humidity.split(",");
+                    timeiot = rrr.timeiot.split(",");
+                    temperatureiot = rrr.temperatureiot.split(",");
+                    humidityiot = rrr.humidityiot.split(",");
+                    //alert(typeof (timet));
+                    //alert(typeof ([timet]));
+                    //debugger;
+                });
+
+
+
+
+                    chart.data.datasets[0].data = (upForms1.innerHTML == '氣溫') ? temperature : humidity;
+                    chart.data.datasets[1].data = (upForms1.innerHTML == '氣溫') ? temperatureiot : humidityiot;
+
+                    chart.data.labels = time;
+                    chart.data.datasets[0].label = upForms1.innerHTML + upForms2.innerHTML;
+                    chart.data.datasets[1].label = 'iot' + upForms1.innerHTML + upForms2.innerHTML;
+
+                    chart.update();
+            }
+
+            </script>
+            <div style="background-color:whitesmoke">
+                <div id="partialDiv">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            時間
+                                        </td>
+                                        <td>
+                                            溫度
+                                        </td>
+                                        <td>
+                                            濕度
+                                        </td>
+                                        <td>
+                                            stationName
+                                        </td>
+                                    </tr>
+                                    @{
+                                        int test = 20;
+                                        for (int i = Model.IOT_RawData.ToList().Count; i > (Model.IOT_RawData.ToList().Count - test); i--)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                                </td>
+                                                <td>
+                                                    @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                                </td>
+                                                <td>
+                                                    @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                                </td>
+                                                @*<td>
+                                                        @Model.IOT_RawData.ElementAt(i - 1).IOT_name
+                                                    </td>*@
+                                                @foreach (var item in Model.IOTStation)
+                                                {
+                                                    if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                                    {
+                                                        <td>
+                                                            @item.Town
+                                                        </td>
+                                                    }
+                                                }
+                                            </tr>
+
+                                        }
+                                    }
+
+                                </table>
+                            </div>
+                            <div class="col">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            時間
+                                        </td>
+                                        <td>
+                                            溫度
+                                        </td>
+                                        <td>
+                                            濕度
+                                        </td>
+                                        <td>
+                                            stationName
+                                        </td>
+                                        <td>
+                                            鄉鎮區
+                                        </td>
+                                    </tr>
+                                    @{
+                                        test = 20;
+                                        for (int i = Model.RawData.ToList().Count; i > (Model.RawData.ToList().Count - test); i--)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Model.RawData.ElementAt(i - 1).DataTime
+                                                </td>
+                                                <td>
+                                                    @Model.RawData.ElementAt(i - 1).Temperature
+                                                </td>
+                                                <td>
+                                                    @(float.Parse(Model.RawData.ElementAt(i - 1).Humidity)*100)
+                                                </td>
+
+                                                @foreach (var item in Model.Station)
+                                                {
+                                                    if (Model.RawData.ElementAt(i - 1).StationID == item.StationID)
+                                                    {
+                                                        <td>
+                                                            @item.LocationName
+                                                        </td>
+                                                        <td>
+                                                            @item.Town
+                                                        </td>
+                                                    }
+                                                }
+
+                                            </tr>
+
+                                        }
+                                    }
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

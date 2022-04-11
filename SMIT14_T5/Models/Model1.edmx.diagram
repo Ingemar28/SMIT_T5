@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dc8adaaed7a14c8cb2b5be67266e5ce7" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="TESTModel.AlarmType" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TESTModel.Area" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TESTModel.Sensor" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TESTModel.UserAccount" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TESTModel.UserData" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="TESTModel.UserSetting" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="TESTModel.FK_AlarmTypeID" ManuallyRouted="false" />
+        <AssociationConnector Association="TESTModel.FK_SensorID" ManuallyRouted="false" />
+        <AssociationConnector Association="TESTModel.FK_AlarmAreaID" ManuallyRouted="false" />
+        <AssociationConnector Association="TESTModel.FK_user_UserAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="TESTModel.FK_US_ID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TESTModel.IOT_Setting" Width="1.5" PointX="5.5" PointY="4.75" />
+        <AssociationConnector Association="TESTModel.FK_IOT_Setting_AlarmType" />
+        <AssociationConnector Association="TESTModel.FK_IOT_Setting_UserData" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

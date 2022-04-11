@@ -1,0 +1,142 @@
+﻿@model SMIT14_T5.ViewsModels.HomecontrollerViewModel
+
+
+<div style="background-color: #F0F0F0">
+    <br><h5 style="font-weight:bold">&ensp;自建IOT站點資訊</h5>
+    <h6>&ensp;(數據資料每十分鐘更新)</h6>
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <table class="table">
+                <tr>
+                    <td>
+                        時間
+                    </td>
+                    <td>
+                        溫度
+                    </td>
+                    <td>
+                        濕度
+                    </td>
+                    <td>
+                        站點名稱
+                    </td>
+                </tr>
+                @{
+                    bool wrcheck = false;
+                    bool djpicheck = false;
+                    bool fleshcheck = false;
+                    bool macpicheck = false;
+                    for (int i = Model.IOT_RawData.ToList().Count; i > (Model.IOT_RawData.ToList().Count - 4); i--)
+                    {
+                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == "wr" && wrcheck == false)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                </td>
+                                @foreach (var item in Model.IOTStation)
+                                {
+                                    if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                    {
+                                        <td>
+                                            @item.Town
+                                        </td>
+                                    }
+                                }
+
+                            </tr>
+                            wrcheck = true;
+                        }
+
+                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == "djpi" && djpicheck == false)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                </td>
+                                @foreach (var item in Model.IOTStation)
+                                {
+                                    if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                    {
+                                        <td>
+                                            @item.Town
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                            djpicheck = true;
+                        }
+
+                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == "macpi" && macpicheck == false)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                </td>
+                                @foreach (var item in Model.IOTStation)
+                                {
+                                    if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                    {
+                                        <td>
+                                            @item.Town
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                            macpicheck = true;
+                        }
+
+                        if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == "flesh" && fleshcheck == false)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).DataTime
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Temperature
+                                </td>
+                                <td>
+                                    @Model.IOT_RawData.ElementAt(i - 1).Humidity
+                                </td>
+                                @foreach (var item in Model.IOTStation)
+                                {
+                                    if (Model.IOT_RawData.ElementAt(i - 1).IOT_name == item.IOT_name)
+                                    {
+                                        <td>
+                                            @item.Town
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                            fleshcheck = true;
+                        }
+
+                    }
+                }
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+

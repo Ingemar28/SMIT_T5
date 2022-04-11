@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TEST_weatherModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IOT_RawData">
+          <Key>
+            <PropertyRef Name="IOT_Data_ID" />
+          </Key>
+          <Property Name="IOT_Data_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataTime" Type="datetime" Nullable="false" />
+          <Property Name="Temperature" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Humidity" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IOT_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IOTStation">
+          <Key>
+            <PropertyRef Name="IOT_ID" />
+          </Key>
+          <Property Name="IOT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IOT_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lat" Type="varchar" MaxLength="50" />
+          <Property Name="Lon" Type="varchar" MaxLength="50" />
+          <Property Name="Town" Type="nvarchar" MaxLength="5" />
+          <Property Name="City" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="RawData">
+          <Key>
+            <PropertyRef Name="Data_ID" />
+          </Key>
+          <Property Name="Data_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DataTime" Type="datetime" Nullable="false" />
+          <Property Name="Temperature" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Humidity" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Pressure" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="H24R" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DateTempHigh" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DateTempLow" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="StationID" Type="varchar" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="St_ID" />
+          </Key>
+          <Property Name="St_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Lat" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lon" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LocationName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StationID" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Town" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6035: 關聯性 'FK_IOT_name' 在主要端上，有不屬於資料表索引鍵的資料行。已排除此關聯性。
+        <Association Name="FK_IOT_name" />-->
+        <!--產生期間發現錯誤:
+警告 6035: 關聯性 'FK_StationID' 在主要端上，有不屬於資料表索引鍵的資料行。已排除此關聯性。
+        <Association Name="FK_StationID" />-->
+        <EntityContainer Name="TEST_weatherModelStoreContainer">
+          <EntitySet Name="IOT_RawData" EntityType="Self.IOT_RawData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IOTStation" EntityType="Self.IOTStation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RawData" EntityType="Self.RawData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Station" EntityType="Self.Station" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TEST_weatherModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="IOT_RawData">
+          <Key>
+            <PropertyRef Name="IOT_Data_ID" />
+          </Key>
+          <Property Name="IOT_Data_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DataTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Temperature" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Humidity" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IOT_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IOTStation">
+          <Key>
+            <PropertyRef Name="IOT_ID" />
+          </Key>
+          <Property Name="IOT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IOT_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Lon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Town" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RawData">
+          <Key>
+            <PropertyRef Name="Data_ID" />
+          </Key>
+          <Property Name="Data_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DataTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Temperature" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Humidity" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pressure" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="H24R" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateTempHigh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateTempLow" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StationID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="St_ID" />
+          </Key>
+          <Property Name="St_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Lat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LocationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StationID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Town" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="TEST_weatherEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IOT_RawData" EntityType="Self.IOT_RawData" />
+          <EntitySet Name="IOTStation" EntityType="Self.IOTStation" />
+          <EntitySet Name="RawData" EntityType="Self.RawData" />
+          <EntitySet Name="Station" EntityType="Self.Station" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TEST_weatherModelStoreContainer" CdmEntityContainer="TEST_weatherEntities">
+          <EntitySetMapping Name="IOT_RawData">
+            <EntityTypeMapping TypeName="TEST_weatherModel.IOT_RawData">
+              <MappingFragment StoreEntitySet="IOT_RawData">
+                <ScalarProperty Name="IOT_Data_ID" ColumnName="IOT_Data_ID" />
+                <ScalarProperty Name="DataTime" ColumnName="DataTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="IOT_name" ColumnName="IOT_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IOTStation">
+            <EntityTypeMapping TypeName="TEST_weatherModel.IOTStation">
+              <MappingFragment StoreEntitySet="IOTStation">
+                <ScalarProperty Name="IOT_ID" ColumnName="IOT_ID" />
+                <ScalarProperty Name="IOT_name" ColumnName="IOT_name" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Lon" ColumnName="Lon" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="City" ColumnName="City" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RawData">
+            <EntityTypeMapping TypeName="TEST_weatherModel.RawData">
+              <MappingFragment StoreEntitySet="RawData">
+                <ScalarProperty Name="Data_ID" ColumnName="Data_ID" />
+                <ScalarProperty Name="DataTime" ColumnName="DataTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="H24R" ColumnName="H24R" />
+                <ScalarProperty Name="DateTempHigh" ColumnName="DateTempHigh" />
+                <ScalarProperty Name="DateTempLow" ColumnName="DateTempLow" />
+                <ScalarProperty Name="StationID" ColumnName="StationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Station">
+            <EntityTypeMapping TypeName="TEST_weatherModel.Station">
+              <MappingFragment StoreEntitySet="Station">
+                <ScalarProperty Name="St_ID" ColumnName="St_ID" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Lon" ColumnName="Lon" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="StationID" ColumnName="StationID" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="City" ColumnName="City" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
